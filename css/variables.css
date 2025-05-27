@@ -1,0 +1,21 @@
+:root {
+  /* Colores gourmet */
+  --color-principal: #8b0000; /* vino tinto */
+  --color-secundario: #f5f0e1; /* crema suave */
+  --color-acento: #c49a6c; /* dorado */
+  --color-texto: #333;
+  --color-blanco: #fff;
+
+  /* Tipografía */
+  --fuente-titulos: 'Playfair Display', serif;
+  --fuente-texto: 'Lato', sans-serif;
+
+  /* Espaciado */
+  --espaciado-s: 8px;
+  --espaciado-m: 16px;
+  --espaciado-l: 32px;
+
+  /* Bordes y sombras */
+  --radio: 8px;
+  --sombra-suave: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
