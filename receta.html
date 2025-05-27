@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalle de Receta | Cocina Comunitaria</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <h1 class="logo">Receta <span class="highlight">Gourmet</span></h1>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Inicio</a>
+          <a href="agregar.html" class="nav-link">Agregar Receta</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main container">
+      <article id="detalle-receta" class="detalle-receta">
+        <!-- JS inyecta aquí la receta -->
+        <h2 class="receta-titulo">Cargando receta...</h2>
+        <img src="" alt="Imagen de la receta" class="receta-imagen" />
+
+        <section class="ingredientes">
+          <h3>Ingredientes</h3>
+          <ul id="lista-ingredientes"></ul>
+        </section>
+
+        <section class="preparacion">
+          <h3>Preparación</h3>
+          <ol id="lista-pasos"></ol>
+        </section>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 Cocina Comunitaria. Comparte el sabor.</p>
+      </div>
+    </footer>
+
+    <script src="js/recetas.js"></script>
+  </body>
+</html>

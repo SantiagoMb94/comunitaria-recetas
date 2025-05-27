@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recetas Gourmet | Cocina Comunitaria</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <h1 class="logo">Recetas <span class="highlight">Gourmet</span></h1>
+        <nav class="nav">
+          <a href="index.html" class="nav-link active">Inicio</a>
+          <a href="agregar.html" class="nav-link">Agregar Receta</a>
+          <a href="#categorias" class="nav-link">Categorías</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="hero">
+        <h2 class="hero-title">Explora lo mejor de la cocina comunitaria</h2>
+        <p class="hero-subtitle">Recetas caseras compartidas con amor</p>
+      </section>
+
+      <section class="recetas-destacadas container">
+        <h3 class="section-title">Recetas destacadas</h3>
+        <div id="recetas-list" class="recetas-grid">
+          <!-- Aquí se inyectan dinámicamente las recetas con JS -->
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 Cocina Comunitaria. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+
+    <script src="js/recetas.js"></script>
+  </body>
+</html>

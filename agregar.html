@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agregar Receta | Cocina Comunitaria</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <h1 class="logo">Nueva <span class="highlight">Receta</span></h1>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Inicio</a>
+          <a href="agregar.html" class="nav-link active">Agregar Receta</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main container">
+      <section class="formulario-receta">
+        <h2>Comparte tu receta</h2>
+        <form id="form-receta">
+          <div class="form-group">
+            <label for="titulo">Título de la receta</label>
+            <input type="text" id="titulo" name="titulo" required />
+          </div>
+
+          <div class="form-group">
+            <label for="imagen">URL de imagen</label>
+            <input type="url" id="imagen" name="imagen" placeholder="https://..." />
+          </div>
+
+          <div class="form-group">
+            <label for="ingredientes">Ingredientes (uno por línea)</label>
+            <textarea id="ingredientes" name="ingredientes" rows="5" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="preparacion">Pasos de preparación (uno por línea)</label>
+            <textarea id="preparacion" name="preparacion" rows="6" required></textarea>
+          </div>
+
+          <button type="submit" class="btn">Agregar Receta</button>
+        </form>
+
+        <div id="mensaje-exito" class="mensaje-exito" style="display: none;">
+          ¡Tu receta ha sido guardada! 🎉
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 Cocina Comunitaria. Gracias por compartir tu sabor.</p>
+      </div>
+    </footer>
+
+    <script src="js/validaciones.js"></script>
+  </body>
+</html>
