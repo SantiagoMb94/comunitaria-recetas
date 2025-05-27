@@ -41,9 +41,10 @@ function mostrarRecetas() {
     const card = document.createElement('article');
     card.className = 'receta-card';
     card.innerHTML = `
-      <img src="${receta.imagen}" alt="Imagen de ${receta.titulo}" />
-      <h4>${receta.titulo}</h4>
-      <a class="btn" href="receta.html?id=${receta.id}">Ver receta</a>
+     <img src="${receta.imagen}" alt="Imagen de ${receta.titulo}" />
+    <h4>${receta.titulo}</h4>
+    <p class="categoria-label">${receta.categoria}</p>
+    <a class="btn" href="receta.html?id=${receta.id}">Ver receta</a>
     `;
     contenedor.appendChild(card);
   });
@@ -59,6 +60,11 @@ function mostrarDetalleReceta() {
   if (!receta) return;
 
   document.querySelector('.receta-titulo').textContent = receta.titulo;
+  const categoria = document.createElement('p');
+    categoria.textContent = `Categoría: ${receta.categoria}`;
+    categoria.classList.add('categoria-label');
+    document.querySelector('.receta-titulo').insertAdjacentElement('afterend', categoria);
+    document.querySelector('.receta-descripcion').textContent = receta.descripcion || 'Descripción no disponible.'; 
   document.querySelector('.receta-imagen').src = receta.imagen;
   document.querySelector('.receta-imagen').alt = `Imagen de ${receta.titulo}`;
 

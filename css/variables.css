@@ -19,3 +19,21 @@
   --radio: 8px;
   --sombra-suave: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+:root {
+  --color-principal: #8b0000;
+  --color-secundario: #f5f0e1;
+  --color-acento: #c49a6c;
+  --color-texto: #333;
+  --color-blanco: #fff;
+
+  --fuente-titulos: 'Playfair Display', serif;
+  --fuente-texto: 'Lato', sans-serif;
+
+  --espaciado-s: 8px;
+  --espaciado-m: 16px;
+  --espaciado-l: 32px;
+
+  --radio: 8px;
+  --sombra-suave: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+    

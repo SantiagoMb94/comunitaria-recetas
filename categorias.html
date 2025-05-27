@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Categorías | Cocina Comunitaria</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <h1 class="logo">Recetas <span class="highlight">Gourmet</span></h1>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Inicio</a>
+          <a href="agregar.html" class="nav-link">Agregar Receta</a>
+          <a href="categorias.html" class="nav-link active">Categorías</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main container">
+      <h2 class="section-title">Categorías de Recetas</h2>
+      <div id="categorias-list" class="recetas-grid">
+        <!-- Aquí se mostrarán las categorías con recetas -->
+      </div>
+
+      <section class="grafico-categorias">
+        <h2>Distribución de Recetas por Categoría</h2>
+        <canvas id="graficoCategorias" width="400" height="200"></canvas>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 Cocina Comunitaria. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+
+    <script src="js/recetas.js"></script>
+    <script src="js/categorias.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
