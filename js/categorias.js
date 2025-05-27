@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const contenedor = document.getElementById('categorias-list');
-  const recetas = obtenerRecetas();
+  const recetas = await obtenerRecetas(); // 👈 aquí estaba el problema
 
   const categorias = {};
 
@@ -38,51 +38,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
     contenedor.appendChild(seccion);
   });
-  // Crear gráfico con Chart.js
-const nombresCategorias = Object.keys(categorias);
-const cantidades = nombresCategorias.map(c => categorias[c].length);
 
-const ctx = document.getElementById('graficoCategorias').getContext('2d');
-new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: nombresCategorias,
-    datasets: [{
-      label: 'Cantidad de recetas',
-      data: cantidades,
-      backgroundColor: 'rgba(139, 0, 0, 0.6)',
-      borderColor: 'rgba(139, 0, 0, 1)',
-      borderWidth: 1
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false
-      },
-      tooltip: {
-        callbacks: {
-          label: context => `${context.raw} receta(s)`
-        }
-      }
+  // Crear gráfico con Chart.js
+  const nombresCategorias = Object.keys(categorias);
+  const cantidades = nombresCategorias.map(c => categorias[c].length);
+
+  const ctx = document.getElementById('graficoCategorias').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: nombresCategorias,
+      datasets: [{
+        label: 'Cantidad de recetas',
+        data: cantidades,
+        backgroundColor: 'rgba(139, 0, 0, 0.6)',
+        borderColor: 'rgba(139, 0, 0, 1)',
+        borderWidth: 1
+      }]
     },
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: 'Cantidad'
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: context => `${context.raw} receta(s)`
+          }
         }
       },
-      x: {
-        title: {
-          display: true,
-          text: 'Categorías'
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Cantidad'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Categorías'
+          }
         }
       }
     }
-  }
-});
-
+  });
 });
