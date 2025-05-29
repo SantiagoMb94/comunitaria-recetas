@@ -1,7 +1,7 @@
 # Recetas Gourmet
 
 ## 📄 Descripción
-Proyecto diseñado para la asignatura PSP (Procesos de Software y Productos), que consiste en una aplicación web para compartir y consultar recetas de cocina de manera colaborativa.
+Proyecto diseñado para la asignatura PSP (Procesos de Software Personal), que consiste en una aplicación web para compartir y consultar recetas de cocina de manera colaborativa.
 
 ### 🛠 Tecnologías empleadas
 <div align="center">
