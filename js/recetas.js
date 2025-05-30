@@ -49,7 +49,7 @@ async function obtenerRecetas() {
 
   // Si son iguales o local tiene más (por recetas agregadas por el usuario), usa el local
   return localRecetas;
-}
+
 
 
 // Guarda una nueva receta
