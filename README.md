@@ -19,10 +19,9 @@ Este proyecto fue desarrollado en el marco de la asignatura PSP - Proceso de Sof
 
 ⚡ Interfaz adaptada para escritorio y dispositivos móviles.
 
-🧱 Estructura del proyecto
-css
-Copiar
-Editar
+## 🧱 Estructura del proyecto
+
+```plaintext
 comunitaria-recetas/
 ├── index.html
 ├── agregar.html
@@ -39,21 +38,17 @@ comunitaria-recetas/
 ├── data/
 │   └── recetas.json
 ├── assets/
-│   └── img/ (opcional para imágenes locales)
+│   └── img/  (opcional para imágenes locales)
 └── README.md
+
 🚀 Cómo ejecutar el proyecto
 Debido al uso de fetch() para cargar archivos locales (data/recetas.json), necesitas ejecutar el proyecto en un servidor local:
 
-bash
-Copiar
-Editar
 # Con Python 3
 python -m http.server
 Luego abre en tu navegador:
 
-bash
-Copiar
-Editar
+
 http://localhost:8000/index.html
 📌 Estado actual y extensiones futuras
 Este proyecto está preparado para crecer. Algunas funcionalidades en proceso o planificadas:
