@@ -40,7 +40,7 @@ comunitaria-recetas/
 ├── assets/
 │   └── img/  (opcional para imágenes locales)
 └── README.md
-
+```
 🚀 Cómo ejecutar el proyecto
 Debido al uso de fetch() para cargar archivos locales (data/recetas.json), necesitas ejecutar el proyecto en un servidor local:
 
