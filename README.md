@@ -1,5 +1,7 @@
 🍽️ Recetas Gourmet
+<br>
 📄 Descripción
+<br>
 Este proyecto fue desarrollado en el marco de la asignatura PSP - Proceso de Software Personal. Es una aplicación web ligera y funcional que permite a los usuarios consultar, agregar y explorar recetas de cocina en un entorno intuitivo y organizado por categorías. Además, se integran visualizaciones dinámicas para analizar los datos de forma gráfica.
 
 🛠 Tecnologías empleadas
