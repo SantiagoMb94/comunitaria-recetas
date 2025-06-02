@@ -1,87 +1,110 @@
-// Clave para guardar en localStorage
-const STORAGE_KEY = 'recetasComunitarias';
+const STORAGE_KEY = 'recetasUsuario';
 
-// Carga recetas desde data/recetas.json y las guarda en localStorage
-async function cargarRecetasDesdeJSON() {
+// === Cargar recetas ===
+async function cargarRecetasDelSistema() {
   try {
     const response = await fetch('data/recetas.json');
     if (!response.ok) throw new Error('No se pudo cargar recetas.json');
-    const recetas = await response.json();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(recetas));
-    return recetas;
+    return await response.json();
   } catch (error) {
-    console.error('Error al cargar recetas:', error);
+    console.error('Error al cargar recetas del sistema:', error);
     return [];
   }
 }
 
-// Carga recetas desde localStorage o JSON si es la primera vez
-async function obtenerRecetas() {
-  const recetasDesdeJSON = await cargarRecetasDesdeJSON();
-  const recetasLocal = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-  const idsLocal = recetasLocal.map(r => r.id);
-  const nuevas = recetasDesdeJSON.filter(r => !idsLocal.includes(r.id));
-
-  if (nuevas.length > 0) {
-    const actualizadas = [...recetasLocal, ...nuevas];
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(actualizadas));
-    return actualizadas;
-  }
-
-  return recetasLocal;
+function cargarRecetasDelUsuario() {
+  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 }
 
+function guardarRecetaUsuario(receta) {
+  const recetasUsuario = cargarRecetasDelUsuario();
+  receta.id = Date.now();
+  recetasUsuario.push(receta);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(recetasUsuario));
+}
 
-  // Si no hay nada en localStorage, inicializa con el JSON
-  if (!local) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(archivo));
-    return archivo;
-  }
+function editarRecetaUsuario(id, datosActualizados) {
+  const recetas = cargarRecetasDelUsuario();
+  const index = recetas.findIndex(r => r.id === id);
+  if (index === -1) return false;
 
-  const localRecetas = JSON.parse(local);
-
-  // Si la cantidad de recetas del JSON > que las del localStorage, actualiza
-  if (archivo.length > localRecetas.length) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(archivo));
-    return archivo;
-  }
-
-  // Si son iguales o local tiene más (por recetas agregadas por el usuario), usa el local
-  return localRecetas;
-
-
-
-// Guarda una nueva receta
-async function guardarReceta(receta) {
-  const recetas = await obtenerRecetas();
-  receta.id = Date.now(); // ID único con timestamp
-  recetas.push(receta);
+  recetas[index] = { ...recetas[index], ...datosActualizados };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(recetas));
+  return true;
 }
 
-// Renderiza recetas en index.html
+function eliminarRecetaUsuario(id) {
+  const recetas = cargarRecetasDelUsuario();
+  const nuevas = recetas.filter(r => r.id !== id);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(nuevas));
+}
+
+// === Obtener combinadas ===
+async function obtenerRecetas() {
+  const sistema = await cargarRecetasDelSistema();
+  const usuario = cargarRecetasDelUsuario();
+
+  const combinadas = [...usuario, ...sistema];
+  const idsUnicos = new Set();
+  return combinadas.filter(r => {
+    if (idsUnicos.has(r.id)) return false;
+    idsUnicos.add(r.id);
+    return true;
+  });
+}
+
+// === Favoritos ===
+function obtenerFavoritos() {
+  return JSON.parse(localStorage.getItem('favoritos')) || [];
+}
+
+function guardarFavoritos(lista) {
+  localStorage.setItem('favoritos', JSON.stringify(lista));
+}
+
+function toggleFavorito(id) {
+  let favoritos = obtenerFavoritos();
+  favoritos = favoritos.includes(id)
+    ? favoritos.filter(fav => fav !== id)
+    : [...favoritos, id];
+  guardarFavoritos(favoritos);
+}
+
+// === Mostrar recetas en el index ===
 async function mostrarRecetas() {
   const contenedor = document.getElementById('recetas-list');
   if (!contenedor) return;
 
   const recetas = await obtenerRecetas();
-  contenedor.innerHTML = '';
+  const favoritos = obtenerFavoritos();
 
+  contenedor.innerHTML = '';
   recetas.forEach(receta => {
+    const esFavorita = favoritos.includes(receta.id);
     const card = document.createElement('article');
     card.className = 'receta-card';
     card.innerHTML = `
-      <img src="${receta.imagen}" alt="Imagen de ${receta.titulo}" />
+      <button class="btn-favorito" data-id="${receta.id}" title="Marcar como favorita">
+        ${esFavorita ? '⭐' : '☆'}
+      </button>
+      <img src="${receta.imagen}" alt="Imagen de ${receta.titulo}" loading="lazy" />
       <h4>${receta.titulo}</h4>
       <p class="categoria-label">${receta.categoria}</p>
       <a class="btn" href="receta.html?id=${receta.id}">Ver receta</a>
     `;
     contenedor.appendChild(card);
   });
+
+  document.querySelectorAll('.btn-favorito').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = parseInt(btn.dataset.id);
+      toggleFavorito(id);
+      mostrarRecetas();
+    });
+  });
 }
 
-// Carga una receta en receta.html
+// === Mostrar detalle receta ===
 async function mostrarDetalleReceta() {
   const params = new URLSearchParams(window.location.search);
   const id = parseInt(params.get('id'));
@@ -114,9 +137,97 @@ async function mostrarDetalleReceta() {
     li.textContent = paso;
     ol.appendChild(li);
   });
+
+  const recetasUsuario = cargarRecetasDelUsuario();
+  const esEditable = recetasUsuario.some(r => r.id === receta.id);
+
+  if (esEditable) {
+    const btnEditar = document.createElement('button');
+    btnEditar.textContent = 'Editar receta';
+    btnEditar.className = 'btn';
+    document.getElementById('detalle-receta').appendChild(btnEditar);
+    btnEditar.addEventListener('click', () => mostrarFormularioEdicion(receta));
+
+    const btnEliminar = document.createElement('button');
+    btnEliminar.textContent = 'Eliminar receta';
+    btnEliminar.className = 'btn btn-reset';
+    document.getElementById('detalle-receta').appendChild(btnEliminar);
+    btnEliminar.addEventListener('click', () => {
+      if (confirm('¿Estás seguro de que deseas eliminar esta receta?')) {
+        eliminarRecetaUsuario(receta.id);
+        alert('Receta eliminada con éxito.');
+        window.location.href = 'index.html';
+      }
+    });
+  }
 }
 
-// Ejecutar automáticamente según la página
+// === Formulario de edición ===
+function mostrarFormularioEdicion(receta) {
+  const contenedor = document.getElementById('detalle-receta');
+  contenedor.innerHTML = `
+    <h2 style="margin-bottom: 1.5rem;">Editar receta</h2>
+    <form id="form-editar" class="formulario-receta">
+      <div class="form-group">
+        <label for="edit-titulo">Título</label>
+        <input type="text" id="edit-titulo" value="${receta.titulo}" required placeholder="Ej: Arroz con pollo" />
+      </div>
+
+      <div class="form-group">
+        <label for="edit-imagen">URL de imagen</label>
+        <input type="url" id="edit-imagen" value="${receta.imagen}" placeholder="https://..." />
+      </div>
+
+      <div class="form-group">
+        <label for="edit-categoria">Categoría</label>
+        <select id="edit-categoria">
+          <option ${receta.categoria === 'Desayuno' ? 'selected' : ''}>Desayuno</option>
+          <option ${receta.categoria === 'Almuerzo' ? 'selected' : ''}>Almuerzo</option>
+          <option ${receta.categoria === 'Cena' ? 'selected' : ''}>Cena</option>
+          <option ${receta.categoria === 'Postre' ? 'selected' : ''}>Postre</option>
+          <option ${receta.categoria === 'Bebida' ? 'selected' : ''}>Bebida</option>
+        </select>
+      </div>
+
+      <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--color-gris-claro);" />
+
+      <div class="form-group">
+        <label for="edit-ingredientes">Ingredientes (uno por línea)</label>
+        <textarea id="edit-ingredientes" rows="5" placeholder="Ej: 2 tazas de arroz&#10;1 pechuga de pollo&#10;Sal al gusto">${receta.ingredientes.join('\n')}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="edit-preparacion">Pasos de preparación (uno por línea)</label>
+        <textarea id="edit-preparacion" rows="6" placeholder="Ej: Sofríe el arroz&#10;Agrega el pollo cocido&#10;Sazona y mezcla">${receta.preparacion.join('\n')}</textarea>
+      </div>
+
+      <button type="submit" class="btn">Guardar cambios</button>
+    </form>
+  `;
+
+  document.getElementById('form-editar').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const editada = {
+      titulo: document.getElementById('edit-titulo').value.trim(),
+      imagen: document.getElementById('edit-imagen').value.trim() || 'https://via.placeholder.com/300x200?text=Sin+imagen',
+      categoria: document.getElementById('edit-categoria').value,
+      ingredientes: document.getElementById('edit-ingredientes').value.trim().split('\n').filter(l => l),
+      preparacion: document.getElementById('edit-preparacion').value.trim().split('\n').filter(l => l)
+    };
+
+    const exito = editarRecetaUsuario(receta.id, editada);
+    if (exito) {
+      alert('Receta actualizada con éxito.');
+      location.reload();
+    } else {
+      alert('Error al actualizar receta.');
+    }
+  });
+}
+
+
+// === Iniciar según página ===
 document.addEventListener('DOMContentLoaded', () => {
   mostrarRecetas();
   mostrarDetalleReceta();

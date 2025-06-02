@@ -16,6 +16,7 @@
           <a href="agregar.html" class="nav-link">Agregar Receta</a>
           <a href="categorias.html" class="nav-link">Categorías</a>
         </nav>
+        <button id="toggle-tema" class="boton-tema">🌓 Cambiar tema</button>
       </div>
     </header>
 
@@ -27,6 +28,23 @@
 
       <section class="recetas-destacadas container">
         <h3 class="section-title">Recetas destacadas</h3>
+        
+        <div class="filtros-recetas">
+        <div class="buscador">
+          <input type="text" id="buscador-recetas" placeholder="Buscar por nombre..." class="buscador-input" />
+          <select id="filtro-categoria" class="buscador-select">
+            <option value="">Todas las categorías</option>
+            <option value="Desayuno">Desayuno</option>
+            <option value="Almuerzo">Almuerzo</option>
+            <option value="Cena">Cena</option>
+            <option value="Postre">Postre</option>
+            <option value="Bebida">Bebida</option>
+          </select>
+        </div>
+        <button id="btn-limpiar-recetas" class="btn btn-reset">🧹 Limpiar</button>
+      </div>
+
+
         <div id="recetas-list" class="recetas-grid">
           <!-- Aquí se inyectan dinámicamente las recetas con JS -->
         </div>

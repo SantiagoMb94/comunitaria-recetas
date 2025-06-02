@@ -1,27 +1,114 @@
-// Resaltar el enlace activo en el menú
+// === TEMA CLARO/OSCURO UNIVERSAL ===
+const toggleBtn = document.getElementById('toggle-tema');
+const body = document.body;
+
+function aplicarTema(tema) {
+  if (tema === 'oscuro') {
+    body.classList.add('tema-oscuro');
+  } else {
+    body.classList.remove('tema-oscuro');
+  }
+  localStorage.setItem('tema', tema);
+}
+
+function alternarTema() {
+  const temaActual = body.classList.contains('tema-oscuro') ? 'oscuro' : 'claro';
+  const nuevoTema = temaActual === 'oscuro' ? 'claro' : 'oscuro';
+  aplicarTema(nuevoTema);
+}
+
+function detectarTemaSistema() {
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'oscuro'
+    : 'claro';
+}
+
+function inicializarTema() {
+  const temaGuardado = localStorage.getItem('tema');
+  const temaInicial = temaGuardado || detectarTemaSistema();
+  aplicarTema(temaInicial);
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', alternarTema);
+  }
+}
+
+// === VERIFICAR SOPORTE LOCALSTORAGE ===
+function almacenamientoDisponible() {
+  try {
+    const test = '__test__';
+    localStorage.setItem(test, test);
+    localStorage.removeItem(test);
+    return true;
+  } catch (e) {
+    console.warn('localStorage no disponible');
+    return false;
+  }
+}
+
+// === BUSCADOR Y FILTRO DE CATEGORÍAS (Index) ===
+function inicializarBuscadorYFiltro() {
+  const inputBuscar = document.getElementById('buscador-recetas');
+  const filtroCategoria = document.getElementById('filtro-categoria');
+  const contenedor = document.getElementById('recetas-list');
+
+  if (!inputBuscar || !filtroCategoria || !contenedor) return;
+
+  inputBuscar.addEventListener('input', filtrarRecetas);
+  filtroCategoria.addEventListener('change', filtrarRecetas);
+
+  async function filtrarRecetas() {
+    const termino = inputBuscar.value.toLowerCase();
+    const categoria = filtroCategoria.value;
+    const recetas = await obtenerRecetas();
+
+    const filtradas = recetas.filter(r => {
+      const coincideNombre = r.titulo.toLowerCase().includes(termino);
+      const coincideCategoria = !categoria || r.categoria === categoria;
+      return coincideNombre && coincideCategoria;
+    });
+
+    contenedor.innerHTML = '';
+
+    if (filtradas.length === 0) {
+      contenedor.innerHTML = '<p>No se encontraron recetas.</p>';
+      return;
+    }
+
+    filtradas.forEach(receta => {
+      const card = document.createElement('article');
+      card.className = 'receta-card';
+      card.innerHTML = `
+        <img src="${receta.imagen}" alt="Imagen de ${receta.titulo}" />
+        <h4>${receta.titulo}</h4>
+        <p class="categoria-label">${receta.categoria}</p>
+        <a class="btn" href="receta.html?id=${receta.id}">Ver receta</a>
+      `;
+      contenedor.appendChild(card);
+    });
+  }
+}
+
+// === BOTÓN LIMPIAR RECETAS DEL USUARIO ===
+function manejarBotonLimpiar() {
+  const btnLimpiar = document.getElementById('btn-limpiar-recetas');
+  if (!btnLimpiar) return;
+
+  btnLimpiar.addEventListener('click', () => {
+    if (confirm('¿Seguro que quieres eliminar todas tus recetas guardadas (no las del sistema)?')) {
+      localStorage.removeItem('recetasUsuario');
+      location.reload();
+    }
+  });
+}
+
+// === DETECTAR Y CARGAR SEGÚN PÁGINA ===
 document.addEventListener('DOMContentLoaded', () => {
-  const current = window.location.pathname.split('/').pop();
-  const links = document.querySelectorAll('.nav-link');
+  if (!almacenamientoDisponible()) {
+    alert('Tu navegador no soporta almacenamiento local. Algunas funciones no estarán disponibles.');
+    return;
+  }
 
-  links.forEach(link => {
-    const href = link.getAttribute('href');
-    if (href === current || (current === '' && href === 'index.html')) {
-      link.classList.add('active');
-    } else {
-      link.classList.remove('active');
-    }
-  });
-});
-
-// Scroll al top si el usuario vuelve a dar clic en "Inicio"
-document.querySelectorAll('a.nav-link').forEach(link => {
-  link.addEventListener('click', function (e) {
-    const href = this.getAttribute('href');
-    const current = window.location.pathname.split('/').pop();
-
-    if (href === current || (href === 'index.html' && current === '')) {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  });
+  inicializarTema();
+  inicializarBuscadorYFiltro();
+  manejarBotonLimpiar();
 });

@@ -1,47 +1,60 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const contenedor = document.getElementById('categorias-list');
-  const recetas = await obtenerRecetas(); // 👈 aquí estaba el problema
+  const recetas = await obtenerRecetas();
 
+  // Normalizar y agrupar recetas por categoría
   const categorias = {};
-
   recetas.forEach(receta => {
-    const categoria = receta.categoria || 'Sin Categoría';
-
-    if (!categorias[categoria]) {
-      categorias[categoria] = [];
-    }
-
+    let categoria = receta.categoria?.trim().toLowerCase() || 'sin categoría';
+    categoria = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+    if (!categorias[categoria]) categorias[categoria] = [];
     categorias[categoria].push(receta);
   });
 
-  Object.keys(categorias).forEach(nombre => {
+  // Colores para categorías
+  const coloresCategoria = {
+    Desayuno: '#F4B400',
+    Almuerzo: '#0F9D58',
+    Cena: '#4285F4',
+    Postre: '#DB4437',
+    Bebida: '#AB47BC',
+    'Sin categoría': '#9E9E9E'
+  };
+
+  // Renderizar cada categoría
+  Object.entries(categorias).forEach(([nombre, lista]) => {
     const seccion = document.createElement('section');
-    seccion.classList.add('receta-card');
+    seccion.classList.add('categoria-seccion');
+
+    const recetasHTML = lista.map(r => {
+      const etiquetasHTML = (r.etiquetas || [])
+        .map(tag => `<span class="etiqueta">#${tag}</span>`)
+        .join(' ');
+      return `
+        <article class="receta-card animada">
+          <img src="${r.imagen}" alt="${r.titulo}" />
+          <h4>${r.titulo}</h4>
+          <p class="categoria-label">${r.categoria}</p>
+          ${etiquetasHTML ? `<div class="etiquetas">${etiquetasHTML}</div>` : ''}
+          <a class="btn" href="receta.html?id=${r.id}">Ver receta</a>
+        </article>
+      `;
+    }).join('');
 
     seccion.innerHTML = `
-      <h3>${nombre}</h3>
-      <div class="recetas-grid">
-        ${categorias[nombre]
-          .map(
-            r => `
-          <article class="receta-card">
-            <img src="${r.imagen}" alt="${r.titulo}" />
-            <h4>${r.titulo}</h4>
-            <p class="categoria-label">${r.categoria}</p>
-            <a class="btn" href="receta.html?id=${r.id}">Ver receta</a>
-          </article>
-        `
-          )
-          .join('')}
-      </div>
+      <h3 class="categoria-titulo">${nombre}</h3>
+      <div class="recetas-grid">${recetasHTML}</div>
     `;
 
     contenedor.appendChild(seccion);
   });
 
-  // Crear gráfico con Chart.js
+  // Gráfico
   const nombresCategorias = Object.keys(categorias);
   const cantidades = nombresCategorias.map(c => categorias[c].length);
+  const total = cantidades.reduce((a, b) => a + b, 0);
+  const porcentajes = cantidades.map(c => ((c / total) * 100).toFixed(1));
+  const colores = nombresCategorias.map(cat => coloresCategoria[cat] || '#ccc');
 
   const ctx = document.getElementById('graficoCategorias').getContext('2d');
   new Chart(ctx, {
@@ -49,36 +62,47 @@ document.addEventListener('DOMContentLoaded', async () => {
     data: {
       labels: nombresCategorias,
       datasets: [{
-        label: 'Cantidad de recetas',
+        label: 'Recetas por categoría',
         data: cantidades,
-        backgroundColor: 'rgba(139, 0, 0, 0.6)',
-        borderColor: 'rgba(139, 0, 0, 1)',
-        borderWidth: 1
+        backgroundColor: colores,
+        borderRadius: 6,
+        borderSkipped: false
       }]
     },
     options: {
       responsive: true,
+      animation: {
+        duration: 800,
+        easing: 'easeOutElastic'
+      },
       plugins: {
         legend: { display: false },
+        title: {
+          display: true,
+          text: 'Distribución de Recetas por Categoría',
+          color: getComputedStyle(document.body).getPropertyValue('--color-texto').trim(),
+          font: {
+            size: 18
+          }
+        },
         tooltip: {
           callbacks: {
-            label: context => `${context.raw} receta(s)`
+            label: (context) => {
+              const cant = context.raw;
+              const percent = porcentajes[context.dataIndex];
+              return `${cant} receta(s) - ${percent}%`;
+            }
           }
         }
       },
       scales: {
         y: {
           beginAtZero: true,
-          title: {
-            display: true,
-            text: 'Cantidad'
-          }
+          ticks: { stepSize: 1 },
+          title: { display: true, text: 'Cantidad' }
         },
         x: {
-          title: {
-            display: true,
-            text: 'Categorías'
-          }
+          title: { display: true, text: 'Categorías' }
         }
       }
     }

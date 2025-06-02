@@ -1,15 +1,17 @@
-/* Reset básico */
+/* ======= RESET BÁSICO ======= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* ======= VARIABLES GLOBALES ======= */
 body {
   font-family: var(--fuente-texto);
   background-color: var(--color-secundario);
   color: var(--color-texto);
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -18,7 +20,7 @@ body {
   padding: var(--espaciado-l);
 }
 
-/* Header */
+/* ======= HEADER ======= */
 .header {
   background-color: var(--color-principal);
   color: var(--color-blanco);
@@ -49,7 +51,7 @@ body {
   text-decoration: underline;
 }
 
-/* Hero */
+/* ======= HERO ======= */
 .hero {
   text-align: center;
   padding: var(--espaciado-l) var(--espaciado-m);
@@ -66,7 +68,7 @@ body {
   color: #555;
 }
 
-/* Recetas */
+/* ======= GRID DE RECETAS ======= */
 .recetas-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -75,15 +77,22 @@ body {
 }
 
 .receta-card {
+  position: relative;
   background-color: var(--color-blanco);
   padding: var(--espaciado-m);
   border-radius: var(--radio);
   box-shadow: var(--sombra-suave);
   text-align: center;
+  transition: transform 0.2s ease;
+}
+.receta-card:hover {
+  transform: scale(1.02);
 }
 
 .receta-card img {
-  max-width: 100%;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
   border-radius: var(--radio);
 }
 
@@ -92,26 +101,40 @@ body {
   font-family: var(--fuente-titulos);
 }
 
+/* ======= BOTONES ======= */
 .btn {
   margin-top: var(--espaciado-s);
   background-color: var(--color-acento);
   border: none;
-  padding: 8px 16px;
+  padding: 10px 20px;
   border-radius: var(--radio);
   color: var(--color-blanco);
   cursor: pointer;
   text-decoration: none;
   transition: background-color 0.3s ease, transform 0.2s ease;
-
 }
 
 .btn:hover {
   background-color: #b07f50;
-  transform: scale(1.02);
+  transform: scale(1.03);
 }
 
+.btn-reset {
+  padding: 10px 16px;
+  background-color: #b07f50;
+  color: #fff;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: var(--radio);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-/* Formulario */
+.btn-reset:hover {
+  background-color: #9e6d3f;
+}
+
+/* ======= FORMULARIO ======= */
 .formulario-receta {
   background-color: var(--color-blanco);
   padding: var(--espaciado-l);
@@ -130,15 +153,25 @@ label {
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   padding: var(--espaciado-s);
   border: 1px solid #ccc;
   border-radius: var(--radio);
   font-size: 1rem;
+  background-color: var(--color-blanco);
+  color: var(--color-texto);
+  transition: border-color 0.3s;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-acento);
 }
 
-/* Detalle de receta */
+/* ======= DETALLE DE RECETA ======= */
 .detalle-receta img {
   width: 100%;
   max-height: 400px;
@@ -157,7 +190,7 @@ textarea {
   margin-top: var(--espaciado-l);
 }
 
-/* Footer */
+/* ======= FOOTER ======= */
 .footer {
   background-color: var(--color-principal);
   color: var(--color-blanco);
@@ -166,6 +199,50 @@ textarea {
   margin-top: var(--espaciado-l);
 }
 
+/* ======= CATEGORÍAS Y GRÁFICOS ======= */
+.categoria-label {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #555;
+  margin-top: 4px;
+}
+
+.grafico-categorias {
+  margin-top: 48px;
+  text-align: center;
+}
+.grafico-categorias canvas {
+  max-width: 100%;
+  height: 400px;
+}
+
+/* ======= FILTROS Y BÚSQUEDA ======= */
+.filtros-recetas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+.buscador {
+  display: flex;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.buscador-input,
+.buscador-select {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: var(--radio);
+  background-color: var(--color-blanco);
+  color: var(--color-texto);
+}
+
+/* ======= MENSAJES ======= */
 .mensaje-exito {
   margin-top: var(--espaciado-m);
   padding: var(--espaciado-s);
@@ -183,41 +260,96 @@ textarea {
   color: #721c24;
 }
 
-.categoria-label {
+/* ======= BOTÓN TEMA OSCURO ======= */
+.boton-tema {
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
   font-size: 0.9rem;
-  font-style: italic;
-  color: #555;
-  margin-top: 4px;
-}
-.categoria-label a {
-  color: var(--color-texto);
-  text-decoration: none;
+  margin-top: 1rem;
 }
 
-.grafico-categorias {
-  margin-top: 48px;
-  text-align: center;
-}
-.grafico-categorias canvas {
-  max-width: 100%;
-  height: 400px;
+/* ======= MODO OSCURO ======= */
+body.tema-oscuro {
+  background-color: #121212;
+  color: #f5f5f5;
 }
 
-.detalle-receta img {
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: var(--radio);
-  margin-bottom: var(--espaciado-m);
-}
-.detalle-receta h2 {
-  font-family: var(--fuente-titulos);
-  margin-bottom: var(--espaciado-m);
+body.tema-oscuro .header,
+body.tema-oscuro .footer {
+  background-color: #1a1a1a;
+  color: #f5f5f5;
 }
 
-.receta-card img {
-  width: 100%;
-  height: 220px; /* 🔥 define un alto uniforme */
-  object-fit: cover; /* 🔒 recorta la imagen sin deformar */
-  border-radius: var(--radio);
+body.tema-oscuro .receta-card,
+body.tema-oscuro .formulario-receta {
+  background-color: #1e1e1e;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+body.tema-oscuro input,
+body.tema-oscuro textarea,
+body.tema-oscuro select {
+  background-color: #262626;
+  color: #f5f5f5;
+  border: 1px solid #555;
+}
+
+body.tema-oscuro .btn,
+body.tema-oscuro .btn-reset {
+  background-color: #444;
+  color: #fff;
+}
+
+body.tema-oscuro .btn:hover,
+body.tema-oscuro .btn-reset:hover {
+  background-color: #666;
+}
+
+body.tema-oscuro .nav-link {
+  color: #f5f5f5;
+}
+
+.categoria-seccion {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 2px dashed var(--color-gris-claro);
+}
+
+.categoria-titulo {
+  font-size: 1.6rem;
+  color: var(--color-principal);
+  margin-bottom: 12px;
+}
+
+.etiquetas {
+  margin-top: 8px;
+}
+.etiqueta {
+  display: inline-block;
+  background-color: var(--color-acento);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.animada {
+  animation: fadeInUp 0.6s ease both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
