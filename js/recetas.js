@@ -120,6 +120,12 @@ async function mostrarDetalleReceta() {
   categoria.classList.add('categoria-label');
   document.querySelector('.receta-titulo').insertAdjacentElement('afterend', categoria);
 
+  if (receta.autor) {
+    const autor = document.createElement('p');
+    autor.innerHTML = `<strong>Autor:</strong> ${receta.autor}`;
+    document.querySelector('.receta-titulo').insertAdjacentElement('afterend', autor);
+  }
+
   document.querySelector('.receta-descripcion').textContent = receta.descripcion || 'Descripción no disponible.';
   document.querySelector('.receta-imagen').src = receta.imagen;
   document.querySelector('.receta-imagen').alt = `Imagen de ${receta.titulo}`;
@@ -170,12 +176,17 @@ function mostrarFormularioEdicion(receta) {
     <form id="form-editar" class="formulario-receta">
       <div class="form-group">
         <label for="edit-titulo">Título</label>
-        <input type="text" id="edit-titulo" value="${receta.titulo}" required placeholder="Ej: Arroz con pollo" />
+        <input type="text" id="edit-titulo" value="${receta.titulo}" required />
+      </div>
+
+      <div class="form-group">
+        <label for="edit-autor">Autor</label>
+        <input type="text" id="edit-autor" value="${receta.autor || ''}" required />
       </div>
 
       <div class="form-group">
         <label for="edit-imagen">URL de imagen</label>
-        <input type="url" id="edit-imagen" value="${receta.imagen}" placeholder="https://..." />
+        <input type="url" id="edit-imagen" value="${receta.imagen}" />
       </div>
 
       <div class="form-group">
@@ -193,12 +204,12 @@ function mostrarFormularioEdicion(receta) {
 
       <div class="form-group">
         <label for="edit-ingredientes">Ingredientes (uno por línea)</label>
-        <textarea id="edit-ingredientes" rows="5" placeholder="Ej: 2 tazas de arroz&#10;1 pechuga de pollo&#10;Sal al gusto">${receta.ingredientes.join('\n')}</textarea>
+        <textarea id="edit-ingredientes" rows="5">${receta.ingredientes.join('\n')}</textarea>
       </div>
 
       <div class="form-group">
         <label for="edit-preparacion">Pasos de preparación (uno por línea)</label>
-        <textarea id="edit-preparacion" rows="6" placeholder="Ej: Sofríe el arroz&#10;Agrega el pollo cocido&#10;Sazona y mezcla">${receta.preparacion.join('\n')}</textarea>
+        <textarea id="edit-preparacion" rows="6">${receta.preparacion.join('\n')}</textarea>
       </div>
 
       <button type="submit" class="btn">Guardar cambios</button>
@@ -210,6 +221,7 @@ function mostrarFormularioEdicion(receta) {
 
     const editada = {
       titulo: document.getElementById('edit-titulo').value.trim(),
+      autor: document.getElementById('edit-autor').value.trim(),
       imagen: document.getElementById('edit-imagen').value.trim() || 'https://via.placeholder.com/300x200?text=Sin+imagen',
       categoria: document.getElementById('edit-categoria').value,
       ingredientes: document.getElementById('edit-ingredientes').value.trim().split('\n').filter(l => l),
@@ -226,9 +238,38 @@ function mostrarFormularioEdicion(receta) {
   });
 }
 
-
-// === Iniciar según página ===
+// === Agregar receta desde formulario ===
 document.addEventListener('DOMContentLoaded', () => {
   mostrarRecetas();
   mostrarDetalleReceta();
+
+  const form = document.getElementById('form-receta');
+  if (form) {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const nueva = {
+        titulo: document.getElementById('titulo').value.trim(),
+        autor: document.getElementById('autor').value.trim(),
+        imagen: document.getElementById('imagen').value.trim() || 'https://via.placeholder.com/300x200?text=Sin+imagen',
+        categoria: document.getElementById('categoria').value,
+        ingredientes: document.getElementById('ingredientes').value.trim().split('\n').filter(Boolean),
+        preparacion: document.getElementById('preparacion').value.trim().split('\n').filter(Boolean)
+      };
+
+      if (nueva.titulo.length < 3 || nueva.autor.length < 3) {
+        alert('El título y el autor deben tener al menos 3 caracteres.');
+        return;
+      }
+
+      guardarRecetaUsuario(nueva);
+      document.getElementById('form-receta').reset();
+      document.getElementById('mensaje-exito').style.display = 'block';
+
+      setTimeout(() => {
+        document.getElementById('mensaje-exito').style.display = 'none';
+        window.location.href = 'index.html';
+      }, 2000);
+    });
+  }
 });
