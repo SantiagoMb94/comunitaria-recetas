@@ -25,7 +25,6 @@ Además, se ha optimizado para mejorar la experiencia del usuario con **modo osc
 - ✅ **Agregar recetas** con título, imagen, ingredientes, pasos y categoría.
 - ✏️ **Editar recetas** creadas por el usuario directamente desde el detalle.
 - 🗑️ **Eliminar recetas** con confirmación visual.
-- 🏷️ **Soporte para etiquetas personalizadas** (ej. #rápido, #vegano).
 - 📂 **Almacenamiento separado** entre recetas base del sistema y las del usuario (`recetas.json` + `localStorage`).
 - 📊 **Gráfico dinámico** de distribución por categoría con **Chart.js**, animado y con colores personalizados.
 - 🌙 **Modo oscuro automático y manual**, persistente entre sesiones.
