@@ -273,3 +273,65 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// === Comentarios por receta ===
+
+function obtenerComentariosPorReceta(idReceta) {
+  const comentarios = JSON.parse(localStorage.getItem('comentariosRecetas')) || {};
+  return comentarios[idReceta] || [];
+}
+
+function guardarComentario(idReceta, nombre, texto) {
+  const comentarios = JSON.parse(localStorage.getItem('comentariosRecetas')) || {};
+  if (!comentarios[idReceta]) comentarios[idReceta] = [];
+
+  comentarios[idReceta].push({
+    nombre: nombre.trim(),
+    texto: texto.trim(),
+    fecha: new Date().toLocaleString()
+  });
+
+  localStorage.setItem('comentariosRecetas', JSON.stringify(comentarios));
+}
+
+function mostrarComentarios(idReceta) {
+  const lista = document.getElementById('lista-comentarios');
+  if (!lista) return;
+
+  const comentarios = obtenerComentariosPorReceta(idReceta);
+  lista.innerHTML = '';
+
+  if (comentarios.length === 0) {
+    const li = document.createElement('li');
+    li.textContent = 'Aún no hay comentarios. ¡Sé el primero!';
+    lista.appendChild(li);
+    return;
+  }
+
+  comentarios.forEach(comentario => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <strong>${comentario.nombre}</strong>: ${comentario.texto}
+      <small>${comentario.fecha}</small>
+    `;
+    lista.appendChild(li);
+  });
+}
+
+function configurarFormularioComentarios(idReceta) {
+  const form = document.getElementById('form-comentario');
+  if (!form) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nombre = document.getElementById('nombre-comentario').value;
+    const texto = document.getElementById('comentario-texto').value;
+
+    if (!nombre || !texto) return alert('Debes completar ambos campos.');
+
+    guardarComentario(idReceta, nombre, texto);
+    mostrarComentarios(idReceta);
+
+    form.reset();
+  });
+}

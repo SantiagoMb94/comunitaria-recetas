@@ -1,80 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Agregar Receta | Cocina Comunitaria</title>
-    <link rel="stylesheet" href="css/variables.css" />
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body>
-    <header class="header">
-      <div class="container">
-        <h1 class="logo">Recetas <span class="highlight">Gourmet</span></h1>
-        <nav class="nav">
-          <a href="index.html" class="nav-link">Inicio</a>
-          <a href="agregar.html" class="nav-link active">Agregar Receta</a>
-          <a href="categorias.html" class="nav-link">Categorías</a>
-        </nav>
-        <button id="toggle-tema" class="boton-tema">🌓 Cambiar tema</button>
-      </div>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Detalle de Receta | Recetas Gourmet</title>
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1 class="logo">Recetas <span class="highlight">Gourmet</span></h1>
+      <nav class="nav">
+        <a href="index.html" class="nav-link">Inicio</a>
+        <a href="agregar.html" class="nav-link">Agregar Receta</a>
+        <a href="categorias.html" class="nav-link">Categorías</a>
+      </nav>
+      <button id="toggle-tema" class="boton-tema">🌓 Cambiar tema</button>
+    </div>
+  </header>
 
-    <main class="main container">
-      <section class="formulario-receta">
-        <h2 style="margin-bottom: 1.5rem;">Comparte tu receta con la comunidad</h2>
-        <form id="form-receta" novalidate>
-          <div class="form-group">
-            <label for="titulo">Título de la receta</label>
-            <input type="text" id="titulo" name="titulo" placeholder="Ej: Arroz con pollo" required />
-          </div>
+  <main class="main container">
+    <section id="detalle-receta">
+      <h2 class="receta-titulo">Cargando...</h2>
+      <img class="receta-imagen" src="" alt="" />
+      <p class="receta-descripcion"></p>
+      <ul id="lista-ingredientes"></ul>
+      <ol id="lista-pasos"></ol>
+    </section>
 
-          <div class="form-group">
-            <label for="imagen">URL de imagen</label>
-            <input type="url" id="imagen" name="imagen" placeholder="https://..." />
-          </div>
-
-          <div class="form-group">
-            <label for="categoria">Categoría</label>
-            <select id="categoria" name="categoria" required>
-              <option value="">Selecciona una categoría</option>
-              <option value="Desayuno">Desayuno</option>
-              <option value="Almuerzo">Almuerzo</option>
-              <option value="Cena">Cena</option>
-              <option value="Postre">Postre</option>
-              <option value="Bebida">Bebida</option>
-            </select>
-          </div>
-
-          <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--color-gris-claro);" />
-
-          <div class="form-group">
-            <label for="ingredientes">Ingredientes (uno por línea)</label>
-            <textarea id="ingredientes" name="ingredientes" rows="5" placeholder="Ej: 2 tazas de arroz&#10;1 pechuga de pollo&#10;Sal al gusto" required></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="preparacion">Pasos de preparación (uno por línea)</label>
-            <textarea id="preparacion" name="preparacion" rows="6" placeholder="Ej: Sofríe el arroz&#10;Agrega el pollo cocido&#10;Sazona y mezcla" required></textarea>
-          </div>
-
-          <button type="submit" class="btn">Guardar Receta</button>
-        </form>
-
-        <div id="mensaje-exito" class="mensaje-exito" style="display: none;">
-          ¡Tu receta ha sido guardada exitosamente!
+    <section class="comentarios-seccion">
+      <h3>Comentarios</h3>
+      <form id="form-comentario">
+        <div class="form-group">
+          <label for="nombre-comentario">Tu nombre</label>
+          <input type="text" id="nombre-comentario" placeholder="Ej: Juan" required />
         </div>
-      </section>
-    </main>
 
-    <footer class="footer">
-      <div class="container">
-        <p>&copy; 2025 Cocina Comunitaria. Todos los derechos reservados.</p>
-      </div>
-    </footer>
+        <div class="form-group">
+          <label for="comentario-texto">Comentario</label>
+          <textarea id="comentario-texto" rows="3" placeholder="Escribe tu comentario..." required></textarea>
+        </div>
 
-    <script src="js/recetas.js"></script>
-    <script src="js/validaciones.js"></script>
-    <script src="js/main.js"></script>
-  </body>
+        <button type="submit" class="btn">Publicar</button>
+      </form>
+
+      <ul id="lista-comentarios" class="comentarios-lista"></ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Cocina Comunitaria. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="js/recetas.js"></script>
+  <script src="js/validaciones.js"></script>
+  <script src="js/main.js"></script>
+</body>
 </html>
