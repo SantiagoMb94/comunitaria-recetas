@@ -127,6 +127,7 @@ body {
 }
 
 .btn-reset {
+  margin-top: 0px;
   padding: 10px 16px;
   background-color: #b07f50;
   color: #fff;
@@ -139,6 +140,47 @@ body {
 
 .btn-reset:hover {
   background-color: #9e6d3f;
+}
+
+.btn-peligro,
+.tema-oscuro .modal-contenido .btn-peligro {
+  background-color: #e53935;
+  color: white;
+}
+
+.btn-peligro:hover {
+  background-color: #c62828;
+}
+
+.tema-oscuro .modal-contenido .btn-peligro:hover {
+  background-color: #b71c1c;
+}
+
+.btn-secundario,
+.tema-oscuro .modal-contenido .btn-secundario {
+  background-color: #9e9e9e;
+  color: white;
+}
+
+.btn-secundario:hover {
+  background-color: #7e7e7e;
+}
+
+.tema-oscuro .modal-contenido .btn-secundario:hover {
+  background-color: #333;
+}
+
+.btn-guardar,
+.tema-oscuro .formulario-receta .btn-guardar {
+  background-color: #2196f3;
+}
+
+.btn-guardar:hover {
+  background-color: #1976d2;
+}
+
+.tema-oscuro .formulario-receta .btn-guardar:hover {
+  background-color: #1565c0;
 }
 
 /* ======= FORMULARIO ======= */
@@ -171,6 +213,7 @@ select {
   color: var(--color-texto);
   transition: border-color 0.3s;
 }
+
 
 input:focus,
 textarea:focus,
@@ -220,6 +263,7 @@ select:focus {
   text-align: center;
 }
 
+
 .grafico-categorias canvas {
   max-width: 100%;
   height: 400px;
@@ -260,6 +304,7 @@ select:focus {
   border-radius: var(--radio);
   color: #155724;
 }
+
 
 .mensaje-error {
   margin-top: var(--espaciado-m);
@@ -349,6 +394,7 @@ body.tema-oscuro .nav-link {
   margin-top: 8px;
 }
 
+
 .etiqueta {
   display: inline-block;
   background-color: var(--color-acento);
@@ -428,4 +474,37 @@ body.tema-oscuro #nombre-comentario {
   background-color: #262626;
   color: #f5f5f5;
   border-color: #555;
+}
+
+/* ======= MODAL ======= */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+.modal.oculto {
+  display: none;
+}
+
+.modal-contenido {
+  background: var(--color-secundario);
+  color: var(--color-texto);
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.modal-acciones {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
 }

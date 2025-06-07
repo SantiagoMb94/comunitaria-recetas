@@ -23,7 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoria = document.getElementById('categoria').value;
     const ingredientes = document.getElementById('ingredientes').value.trim().split('\n').filter(l => l);
     const preparacion = document.getElementById('preparacion').value.trim().split('\n').filter(l => l);
+    
+    console.log("titulo", `"${titulo}"`);
+    console.log("imagen", `"${imagen}"`);
+    console.log("categoria", `"${categoria}"`);
+    console.log("ingredientes", ingredientes.length ? ingredientes : "VACÍO");
+    console.log("preparacion", preparacion.length ? preparacion : "VACÍO");
 
+    
     // === Validaciones ===
     if (titulo.length < 3) {
       alert('El título debe tener al menos 3 caracteres.');

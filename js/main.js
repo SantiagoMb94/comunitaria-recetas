@@ -93,15 +93,26 @@ function inicializarBuscadorYFiltro() {
 // === BOTÓN LIMPIAR RECETAS DEL USUARIO ===
 function manejarBotonLimpiar() {
   const btnLimpiar = document.getElementById('btn-limpiar-recetas');
-  if (!btnLimpiar) return;
+  const modal = document.getElementById('modal-confirmacion');
+  const confirmarBtn = document.getElementById('confirmar-limpieza');
+  const cancelarBtn = document.getElementById('cancelar-limpieza');
+
+  if (!btnLimpiar || !modal || !confirmarBtn || !cancelarBtn) return;
 
   btnLimpiar.addEventListener('click', () => {
-    if (confirm('¿Seguro que quieres eliminar todas tus recetas guardadas (no las del sistema)?')) {
-      localStorage.removeItem('recetasUsuario');
-      location.reload();
-    }
+    modal.classList.remove('oculto');
+  });
+
+  confirmarBtn.addEventListener('click', () => {
+    localStorage.removeItem('recetasUsuario');
+    location.reload();
+  });
+
+  cancelarBtn.addEventListener('click', () => {
+    modal.classList.add('oculto');
   });
 }
+
 
 // === DETECTAR Y CARGAR SEGÚN PÁGINA ===
 document.addEventListener('DOMContentLoaded', () => {
