@@ -242,7 +242,7 @@ function mostrarFormularioEdicion(receta) {
 document.addEventListener('DOMContentLoaded', () => {
   mostrarRecetas();
   mostrarDetalleReceta();
-
+  const modal = document.getElementById('modal-exito');
   const form = document.getElementById('form-receta');
   if (form) {
     form.addEventListener('submit', e => {
@@ -261,15 +261,19 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('El título y el autor deben tener al menos 3 caracteres.');
         return;
       }
+      
 
       guardarRecetaUsuario(nueva);
-      document.getElementById('form-receta').reset();
-      document.getElementById('mensaje-exito').style.display = 'block';
+      form.reset();
 
-      setTimeout(() => {
-        document.getElementById('mensaje-exito').style.display = 'none';
-        window.location.href = 'index.html';
-      }, 2000);
+      if (modal) {
+        modal.classList.remove('oculto');
+
+        setTimeout(() => {
+          modal.classList.add('oculto');
+          window.location.href = 'index.html';
+        }, 2000);
+      }
     });
   }
 });
