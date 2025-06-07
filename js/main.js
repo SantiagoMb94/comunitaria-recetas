@@ -5,8 +5,10 @@ const body = document.body;
 function aplicarTema(tema) {
   if (tema === 'oscuro') {
     body.classList.add('tema-oscuro');
+    toggleBtn.textContent = '🌙';
   } else {
     body.classList.remove('tema-oscuro');
+    toggleBtn.textContent = '🌞';
   }
   localStorage.setItem('tema', tema);
 }
