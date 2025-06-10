@@ -2,7 +2,7 @@ import { mostrarError, limpiarErrores } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const formulario = document.getElementById('form-receta');
-  const mensaje = document.getElementById('mensaje-exito');
+  const modal = document.getElementById('modal-exito');
 
   if (!formulario) return;
 
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     await guardarRecetaUsuario(nuevaReceta);
 
     formulario.reset();
-    mostrarMensajeExito(mensaje);
+    mostrarModalExito(modal);
   });
 });
 
@@ -91,10 +91,11 @@ function esURLValida(url) {
   }
 }
 
-function mostrarMensajeExito(mensaje) {
-  mensaje.style.display = 'block';
-  mensaje.scrollIntoView({ behavior: 'smooth' });
+function mostrarModalExito(modal) {
+  if (!modal) return;
+  modal.classList.remove('oculto');
   setTimeout(() => {
-    mensaje.style.display = 'none';
-  }, 3000);
+    modal.classList.add('oculto');
+    window.location.href = 'index.html';
+  }, 2000);
 }

@@ -238,44 +238,10 @@ function mostrarFormularioEdicion(receta) {
   });
 }
 
-// === Agregar receta desde formulario ===
+// === Inicialización de página ===
 document.addEventListener('DOMContentLoaded', () => {
   mostrarRecetas();
   mostrarDetalleReceta();
-  const modal = document.getElementById('modal-exito');
-  const form = document.getElementById('form-receta');
-  if (form) {
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-
-      const nueva = {
-        titulo: document.getElementById('titulo').value.trim(),
-        autor: document.getElementById('autor').value.trim(),
-        imagen: document.getElementById('imagen').value.trim() || 'https://via.placeholder.com/300x200?text=Sin+imagen',
-        categoria: document.getElementById('categoria').value,
-        ingredientes: document.getElementById('ingredientes').value.trim().split('\n').filter(Boolean),
-        preparacion: document.getElementById('preparacion').value.trim().split('\n').filter(Boolean)
-      };
-
-      if (nueva.titulo.length < 3 || nueva.autor.length < 3) {
-        alert('El título y el autor deben tener al menos 3 caracteres.');
-        return;
-      }
-      
-
-      guardarRecetaUsuario(nueva);
-      form.reset();
-
-      if (modal) {
-        modal.classList.remove('oculto');
-
-        setTimeout(() => {
-          modal.classList.add('oculto');
-          window.location.href = 'index.html';
-        }, 2000);
-      }
-    });
-  }
 });
 
 // === Comentarios por receta ===
