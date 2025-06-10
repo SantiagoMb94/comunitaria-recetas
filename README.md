@@ -31,6 +31,7 @@ Además, se ha optimizado para mejorar la experiencia del usuario con **modo osc
 - ⚡ **Interfaz responsiva** adaptada para escritorio y dispositivos móviles.
 - 🧼 **Validaciones inteligentes**: longitud mínima, estructura, duplicados, URL válidas.
 - 🔍 **Buscador con filtros** por título y categoría.
+- 🎉 **Modal de éxito** al guardar una receta y prevención de duplicados.
 
 ---
 
